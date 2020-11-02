@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="author" content="Codecool"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+
+    <title>Codecool Shop</title>
+
+    <!-- Bootstrap components -->
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <!--Latest compiled and minified Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <!-- End of Bootstrap components -->
+
+    <!-- fontawesome script -->
+    <script src="https://kit.fontawesome.com/80c95c391e.js" crossorigin="anonymous"></script>
+
+    <!--JavaScript-->
+    <script src="/static/js/editCart.js" defer></script>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/custom.css"/>
+</head>
+
+<body>
+
+<div th:replace="header.html"></div>
+
+<div class="container">
+    <div id="errorContainer">
+        <h1 th:text="${errorMessage}" id="error"></h1>
+    </div>
+    <div id="tableContainer">
+        <table class="table-design">
+            <thead>
+            <tr>
+                <th>Product Image</th>
+                <th class="product-name-title">Product Name</th>
+                <th class="price-title">Price of 1 Item</th>
+                <th class="quantity-title">Quantity</th>
+                <th>Subtotal</th>
+            </tr>
+            </thead>
+            <tbody th:each="product, iterStat : ${cart}">
+            <tr>
+                <td><img class="cart-image" src="http://placehold.it/400x250/000/fff"
+                         th:attr="src='/static/img/product_' + ${product.id} + '.jpg'" alt=""/></td>
+                <td th:text="${product.name}" class="cart-name"></td>
+                <td  class="price" th:data-default-price="${product.defaultPrice}" th:data-id="${product.id}" th:text="${product.price}"></td>
+                <td class="quantity" th:data-id="${product.id}" th:text="${product.quantity}"></td>
+                <td>
+                    <div  th:with="subTotal=${product.quantity * product.defaultPrice}">
+                        <span class="subtotal" th:data-id="${product.id}" th:text="${#numbers.formatDecimal(subTotal, 2, 2)} + ${product.getDefaultCurrency()}"></span>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="total" th:text="'Total value: ' + ${#numbers.formatDecimal(totalPrice, 2, 2)} + ' $'"></div>
+    </div>
+    <br>
+    <div id="checkout">
+        <p>Checkout</p>
+    </div>
+<!--    <button class="btn btn-success"><a href="/checkout" >Checkout</a></button>-->
+
+</div>
+
+<div th:replace="footer.html :: copy"></div>
+
+</body>
+</html>
